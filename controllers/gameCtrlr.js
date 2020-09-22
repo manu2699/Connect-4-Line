@@ -6,10 +6,12 @@ const resetMatrix = [
   [0, 0, 0, 0, 0, 0, 0],
   [0, 0, 0, 0, 0, 0, 0]
 ]
-const dict = [0, "Red Coin Player", "Yellow Coin Player"]
+const dict = [0, "Red Wins", "Yellow Wins"]
+
+//get request /api/start
 const StartGame = (req, res) => {
   const db = req.app.get("db");
-  db.insert({ ...req.body, gameMatrix: resetMatrix, lastPlayed: 0 }, (err, doc) => {
+  db.insert({ gameMatrix: resetMatrix, lastPlayed: 0 }, (err, doc) => {
     if (err) {
       return res.status(400).json({ message: "Some error occured :(" });
     }
@@ -17,12 +19,20 @@ const StartGame = (req, res) => {
   });
 };
 
-//let 1 be red and 2 be yellow
-//requires column on request body.
+// let 1 be red and 2 be yellow.
+// requires column on request body.
+// Post Request Format
+// {
+//   "gameId": "",
+//   "column": 
+// }
 const PlayGame = async (req, res) => {
 
   if (req.game.winCheck) {
-    return res.status(200).json({ message: `Already Won by ${dict[req.game.lastPlayed]}`, status: "Game Over" });
+    return res.status(200).json({ message: `Game Already Over ~ Result:${dict[req.game.lastPlayed]}!!`, status: "Game Over" });
+  }
+  if (+req.body.column > 7 && +req.body.column < 0) {
+    return res.status(200).json({ message: "Make a valid move between 0 to 6 columns", status: "Invalid Move" });
   }
 
   let { gameMatrix, lastPlayed } = req.game;
@@ -47,8 +57,8 @@ const PlayGame = async (req, res) => {
       return res.status(400).json({ message: "Some error occured :(" });
     }
     if (winCheck)
-      return res.status(200).json({ message: `Won by ${dict[currentMove]}`, status: "Game Over" });
-    return res.status(200).json({ message: "Move Made", status: "Playing" });
+      return res.status(200).json({ message: `${dict[currentMove]}!!!`, status: "Game Over" });
+    return res.status(200).json({ message: "Move Made", status: "Valid move" });
   });
 };
 

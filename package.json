@@ -1,7 +1,7 @@
 {
-	"name": "backend_challenge",
+	"name": "Connect-4-Line",
 	"version": "1.0.0",
-	"description": "Connect 4 game",
+	"description": "Connect 4 on a Line Game",
 	"main": "index.js",
 	"scripts": {
 		"start": "node index.js",
