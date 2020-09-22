@@ -4,8 +4,8 @@ const Datastore = require("nedb");
 const app = express();
 app.use(express.json());
 
-const db = new Datastore("game.db");
-db.loadDatabase();
+const db = new Datastore({ filename: 'game.db', autoload: true });
+db.persistence.setAutocompactionInterval(5);
 app.set("db", db);
 
 const port = process.env.PORT || 5000;

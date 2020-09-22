@@ -22,7 +22,7 @@ const StartGame = (req, res) => {
 const PlayGame = async (req, res) => {
 
   if (req.game.winCheck) {
-    return res.status(200).json({ message: `Won by ${dict[req.game.lastPlayed]}`, status: "Game Over" });
+    return res.status(200).json({ message: `Already Won by ${dict[req.game.lastPlayed]}`, status: "Game Over" });
   }
 
   let { gameMatrix, lastPlayed } = req.game;
@@ -54,6 +54,10 @@ const PlayGame = async (req, res) => {
 
 const checkMatrix = (gameMatrix, currentMove, row, col) => {
   let i, j, temp;
+
+  for (let row = 0; row < 6; row++) {
+    console.log(gameMatrix[row])
+  }
 
   //check row
   for (i = 0, temp = 0; i < 6; i++) {
